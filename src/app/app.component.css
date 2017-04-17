@@ -1,0 +1,29 @@
+.header-bg {
+    background-color: #205493;
+}
+
+img {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+nav ul li {
+    list-style: none;
+    float:left;
+    padding: 1em;
+    padding-top: 2em !important;
+}
+
+ul li a {
+    color: #fff;
+    font-size: 1.1em;
+}
+
+nav li:hover, nav li a:hover {
+    text-decoration: none;
+    cursor: pointer;
+    color: #cccccc;
+}
+
+
+

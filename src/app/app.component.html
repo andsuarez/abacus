@@ -1,3 +1,19 @@
-<h1>
-  {{title}}
-</h1>
+<div class="header-bg">
+    <header class="container">
+        <img [src]="logoPath" alt="USAID OFDA logo">
+        <nav class="pull-right">
+            <ul>
+                <li><a>Dashboard <span class="glyphicon glyphicon-dashboard"></span></a></li>
+                <li><a>About <span class="glyphicon glyphicon-info-sign"></span></a></li>
+                <li><a>Active <span class="glyphicon glyphicon-fire"></span></a></li>
+                <li><a>Projects <span class="glyphicon glyphicon-briefcase"></span></a></li>
+                <li><a>Post Awards <span class="glyphicon glyphicon-certificate"></span></a></li>
+                <li><a>My Space <span class="glyphicon glyphicon-home"></span></a></li>
+            </ul>
+        </nav>
+    </header>
+</div>
+<div class="container">
+    <h3>Bar Chart</h3>
+    <app-barchart *ngIf="chartData" [data]="chartData">charts loading...</app-barchart>
+</div>
