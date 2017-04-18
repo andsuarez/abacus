@@ -17,7 +17,10 @@ export class AppComponent implements OnInit {
     // give everything a chance to get loaded before starting the animation to reduce choppiness
     setTimeout(() => {
       this.abacusService.getData().subscribe(
-          (data) => {this.mapData = data; console.log(this.mapData)},
+          (data) => {
+            this.mapData = data;
+            console.log(this.mapData)
+          },
           (error) => {console.log(error)}
         );
     }, 1000);

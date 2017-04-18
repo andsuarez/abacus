@@ -1,1 +1,3 @@
-<div class="d3-chart" #map></div>
+<div class="d3-map" #map></div>
+<button (click)="returnJson()">{{showJson ? "Hide" : "Show"}} Response</button><br>
+<span *ngIf="showJson">{{data | json}}</span>

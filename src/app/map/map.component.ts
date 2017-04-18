@@ -2,16 +2,20 @@ import { Component, OnInit, ViewChild, ElementRef, Input, ViewEncapsulation } fr
 import * as d3 from 'd3';
 
 @Component({
-  selector: 'mapComponent',
+  selector: 'MapComponent',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class MapComponent implements OnInit {
   @ViewChild('map') private mapContainer: ElementRef;
-  @Input() private data: Array<any>;
- 
+  @Input() data: any;
 
+  showJson = false;
+
+  returnJson() {
+    this.showJson = !this.showJson;
+  }
 
   ngOnInit() {
     
