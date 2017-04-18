@@ -6,14 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AlertModule } from 'ngx-bootstrap';
 
 import { AppComponent } from './app.component';
-import { BarchartComponent } from './barchart/barchart.component';
+import { MapComponent } from './map/map.component';
 
 import { AbacusService } from './shared/abacus.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BarchartComponent
+    MapComponent
   ],
   imports: [
     BrowserModule,
