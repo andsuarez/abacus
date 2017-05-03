@@ -1,0 +1,14 @@
+.map {
+    width: 100%;
+    height: 600px;
+    background-color:#efefef;
+}
+
+.country {
+    fill: white;
+    stroke: black;
+}
+
+/*.countryHover {
+    fill: #b2b2b2;
+}*/
