@@ -27,43 +27,48 @@ export class MapComponent implements OnInit {
   constructor(private abacusService: AbacusService) { }
 
   ngOnInit() {
+    console.log('should call loadData');
     this.loadData();
     this.createMap();
   }
  
 
   loadData() {
-      // this.abacusService.getdashboardMapQueryVO1Data().subscribe(
-      //     (data) => {
-      //       console.log(data);
-      //       this.dashboardMapQueryData = data;
-      //     },
-      //     (error) => {console.log(error)}
-      //   );
+      this.abacusService.getdashboardMapQueryVO1Data().subscribe(
+          (data) => {
+            console.log('getdashboardMapQueryVO1Data called!');
+            this.dashboardMapQueryData = data;
+            console.log(this.dashboardMapQueryData);
+          },
+          (error) => {console.log(error)}
+        );
 
-      // this.abacusService.gethomePageMapRegionCountryVO1Data().subscribe(
-      //     (data) => {
-      //       console.log(data);
-      //       this.homePageMapRegionCountryData = data;
-      //     },
-      //     (error) => {console.log(error)}
-      //   );
+      this.abacusService.gethomePageMapRegionCountryVO1Data().subscribe(
+          (data) => {
+            console.log('gethomePageMapRegionCountryVO1Data called!');
+            this.homePageMapRegionCountryData = data;
+            console.log(this.homePageMapRegionCountryData);
+          },
+          (error) => {console.log(error)}
+        );
 
-      // this.abacusService.gethomePageMapRegionCountryProjectVO1Data().subscribe(
-      //     (data) => {
-      //       console.log(data);
-      //       this.homePageMapRegionCountryProject = data;
-      //     },
-      //     (error) => {console.log(error)}
-      //   );
+      this.abacusService.gethomePageMapRegionCountryProjectVO1Data().subscribe(
+          (data) => {
+            console.log('gethomePageMapRegionCountryProjectVO1Data called!');
+            this.homePageMapRegionCountryProject = data;
+            console.log(this.homePageMapRegionCountryProject);
+          },
+          (error) => {console.log(error)}
+        );
 
-      // this.abacusService.getHomePageMapRegionCountrySectorVO1Data().subscribe(
-      //   (data) => {
-      //     console.log(data);
-      //     this.homePageMapRegionCountrySector = data;
-      //   },
-      //   (error) => {console.log(error)}
-      // );
+      this.abacusService.getHomePageMapRegionCountrySectorVO1Data().subscribe(
+        (data) => {
+          console.log('getHomePageMapRegionCountrySectorVO1Data called!');
+          this.homePageMapRegionCountrySector = data;
+          console.log(this.homePageMapRegionCountrySector);
+        },
+        (error) => {console.log(error)}
+      );
 
   }
 
@@ -93,7 +98,7 @@ export class MapComponent implements OnInit {
 
         //converts topoJSON into geoJSON, accepts the returned data as first argument and targeted item as the second argument (this being the countries object)
         let countries = topojson.feature(data, this.mapData.objects.countries).features;
-        console.log(countries);
+        // console.log(countries);
 
         svg.selectAll('.country').data(countries)
             .enter()
