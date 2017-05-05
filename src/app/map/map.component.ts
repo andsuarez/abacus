@@ -13,8 +13,7 @@ import { AbacusService } from '../shared/abacus.service';
 })
 export class MapComponent implements OnInit {
   @ViewChild('map') map: ElementRef;
-
-  title: string = 'Map';
+  
   mapData: any;
   dashboardMapQueryData: any;
   homePageMapRegionCountryData: any;
@@ -72,6 +71,7 @@ export class MapComponent implements OnInit {
   }
 
   stopped() {
+    alert('stopped() clicked')
     if (d3.event.defaultPrevented) {
       d3.event.stopPropatation()
     };
@@ -105,17 +105,39 @@ export class MapComponent implements OnInit {
               .attr('height', this.h)
               .on('click', this.stopped, true);
 
-    svg.append('rect')
-      .attr('width', this.w)
-      .attr('height', this.h)
-      .attr('fill', '#ffffff')
-      .on('click', reset);
+    // svg.append('rect')
+    //   .attr('width', this.w)
+    //   .attr('height', this.h)
+    //   .attr('fill', '#ffffff')
+    //   .on('click', reset);
 
     let g = svg.append('g');
 
     svg.call(zoom);
 
+    function clicked(d) {
+      alert('clicked function()');
+      if(active.node() === this) {
+        return reset();
+      }
+      active.classed('active', false);
+      active = d3.select(this).classed('active', true);
+
+      let bounds = path.bounds(d),
+        dx = bounds[1][0] - bounds[0][0],
+        dy = bounds[1][1] - bounds[0][1],
+        x = (bounds[0][0] + bounds[1][0]) / 2,
+        y = (bounds[0][1] + bounds[1][1]) / 2,
+        scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / this.w, dy / this.w))),
+        translate = [this.w / 2 - scale * x, this.h / 2 - scale * y];
+
+        svg.transition()
+          .duration(750)
+          .call(this.zoom.transform, d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale))
+    }
+
     function reset() {
+      alert('reset() called');
       active.classed('active', false);
       active = d3.select(null);
 
@@ -148,11 +170,7 @@ export class MapComponent implements OnInit {
               }
             })
             .style('stroke', '#d7d7d7')
-            // .on('click', function(d, i) {
-            //   if (countries[i].properties.code !== '-99'){
-            //     d3.select(this).style('fill','orange');
-            //   }
-            // })
+            .on('click', clicked)
             .on('mouseenter', function(d, i) {
               if (countries[i].properties.code !== '-99' && d3.select(this).attr('style').indexOf('fill: orange') === -1 ){
                 d3.select(this).style('fill','#b2b2b2');

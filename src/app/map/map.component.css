@@ -8,3 +8,7 @@
     fill: white;
     stroke: black;
 }
+
+.active {
+    fill: dodgerblue !important;
+}
