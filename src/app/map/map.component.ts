@@ -27,8 +27,7 @@ export class MapComponent implements OnInit {
   constructor(private abacusService: AbacusService) { }
 
   ngOnInit() {
-    console.log('should call loadData');
-    this.loadData();
+    // this.loadData();
     this.createMap();
   }
  
@@ -72,13 +71,59 @@ export class MapComponent implements OnInit {
 
   }
 
+  stopped() {
+    if (d3.event.defaultPrevented) {
+      d3.event.stopPropatation()
+    };
+  }
+
   createMap() {
     let element = this.map.nativeElement;
     this.h = element.offsetHeight;
     this.w = element.offsetWidth;
+    let active = d3.select(null);
+
+    // creates projection, meaning takes a spherical object and decides where each point should be placed in a flat object (like a screen)
+    let projection = d3.geoMercator()
+        .translate([this.w/2, this.h/1.6]) //so it's placed in the middle of the visual
+        .scale(180);
+
+    //zoom-scroll
+    let zoom = d3.zoom()
+      .scaleExtent([1, 20])
+      .on('zoom', () => {
+        g.style('stroke-width', 1.5 / d3.event.transform.k + "px");
+        g.attr('transform', d3.event.transform);
+      });
+
+    // creates line paths based on the projections from above
+    let path = d3.geoPath()
+            .projection(projection);
+
     let svg = d3.select(element).append('svg')
               .attr('width', this.w)
-              .attr('height', this.h);
+              .attr('height', this.h)
+              .on('click', this.stopped, true);
+
+    svg.append('rect')
+      .attr('width', this.w)
+      .attr('height', this.h)
+      .attr('fill', '#ffffff')
+      .on('click', reset);
+
+    let g = svg.append('g');
+
+    svg.call(zoom);
+
+    function reset() {
+      active.classed('active', false);
+      active = d3.select(null);
+
+      svg.transition()
+        .duration(750)
+        .call(this.zoom.transform, d3.zoomIdentity);
+    }
+
 
     d3.json('./assets/countries-topo.json', (error, data) => {
       if (error) {
@@ -87,20 +132,12 @@ export class MapComponent implements OnInit {
         this.mapData = data;
         // console.log(this.mapData);
 
-        // creates projection, meaning takes a spherical object and decides where each point should be placed in a flat object (like a screen)
-        let projection = d3.geoMercator()
-            .translate([this.w/2, this.h/2]) //so it's placed in the middle of the visual
-            .scale(130);
-
-        // creates line paths based on the projections from above
-        let path = d3.geoPath()
-            .projection(projection);
 
         //converts topoJSON into geoJSON, accepts the returned data as first argument and targeted item as the second argument (this being the countries object)
         let countries = topojson.feature(data, this.mapData.objects.countries).features;
         // console.log(countries);
 
-        svg.selectAll('.country').data(countries)
+        g.selectAll('.country').data(countries)
             .enter()
             .append('path')
             .attr('class', 'country')
@@ -111,11 +148,11 @@ export class MapComponent implements OnInit {
               }
             })
             .style('stroke', '#d7d7d7')
-            .on('click', function(d, i) {
-              if (countries[i].properties.code !== '-99'){
-                d3.select(this).style('fill','orange');
-              }
-            })
+            // .on('click', function(d, i) {
+            //   if (countries[i].properties.code !== '-99'){
+            //     d3.select(this).style('fill','orange');
+            //   }
+            // })
             .on('mouseenter', function(d, i) {
               if (countries[i].properties.code !== '-99' && d3.select(this).attr('style').indexOf('fill: orange') === -1 ){
                 d3.select(this).style('fill','#b2b2b2');
@@ -128,7 +165,7 @@ export class MapComponent implements OnInit {
             });
       }
     });
-    
+
   }
 
 }
